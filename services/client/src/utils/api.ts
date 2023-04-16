@@ -74,11 +74,14 @@ export function useMembers() {
   const { getAccessTokenSilently } = useAuth0()
   return useQuery("members", async () => {
     const token = await getAccessTokenSilently()
-    const response = await api.get<DiscordMember[]>("/members", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await api.get<{ members: DiscordMember[]; more: boolean }>(
+      "/members",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
     return response.data
   })
 }

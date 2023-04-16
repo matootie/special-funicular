@@ -4,8 +4,6 @@
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
     "paths": {
       "#app": ["src/app"],
       "#styles": ["src/styles.css"],
@@ -14,6 +12,5 @@
       "#utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }

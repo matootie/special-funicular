@@ -7,16 +7,16 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Auth0Provider } from "@auth0/auth0-react"
 import { Routes, Route } from "react-router-dom"
 
+// Page imports.
+import { Dashboard } from "#pages/dashboard"
+import { MemberList } from "#pages/member-list"
+import { MemberDetail } from "#pages/member-detail"
+
 // Component imports.
 import { Shell } from "#components/utility"
 
 // Utility imports.
 import { RequireAuth } from "#utils/auth"
-
-function MemberDetail() {
-  const params = useParams()
-  return <h1>Hello, member {params.memberId}!</h1>
-}
 
 export default function App() {
   const navigate = useNavigate()
@@ -41,11 +41,11 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<h1>Hello, dashboard!</h1>}
+              element={<Dashboard />}
             />
             <Route
               path="/members"
-              element={<h1>Hello, member list!</h1>}
+              element={<MemberList />}
             />
             <Route
               path="/members/:memberId"

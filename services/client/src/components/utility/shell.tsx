@@ -5,9 +5,9 @@
  */
 
 // External imports.
-import { ReactNode, Fragment } from "react"
+import { ReactNode } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { Disclosure, Menu, Transition } from "@headlessui/react"
+import { Disclosure } from "@headlessui/react"
 import { useAuth0 } from "@auth0/auth0-react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 
@@ -33,7 +33,7 @@ const navigation = [
  * Application shell.
  */
 export function Shell({ children }: { children?: ReactNode }) {
-  const { isLoading, loginWithRedirect, logout } = useAuth0()
+  const { isLoading, logout } = useAuth0()
   const user = useUser()
   const { pathname } = useLocation()
   if (isLoading) {
@@ -44,7 +44,7 @@ export function Shell({ children }: { children?: ReactNode }) {
     )
   }
   return (
-    <div className="h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col relative">
       <div className="py-2 px-4">
         <Disclosure
           as="nav"
@@ -198,7 +198,7 @@ export function Shell({ children }: { children?: ReactNode }) {
         </Disclosure>
       </div>
 
-      <div className="h-full w-full z-0 flex-1 overflow-scroll px-4 pb-2">
+      <div className="h-full w-full z-0 flex-1 px-4 pb-2">
         <div className="h-full w-full max-w-4xl mx-auto bg-fdarkgray rounded-lg">
           {children}
         </div>
