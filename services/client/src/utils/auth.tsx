@@ -16,12 +16,16 @@ import { useMembership } from "#utils/api"
 /**
  * Hook to get access to the user.
  */
-export function useUser(): User {
-  const { pathname } = useLocation()
-  const { user, loginWithRedirect } = useAuth0()
-  console.log(user)
+interface AppUser extends User {
+  id: string
+}
+export function useUser(): AppUser {
+  const { user } = useAuth0()
   if (!user) throw new Error("Missing user.")
-  return user
+  return {
+    ...user,
+    id: user.sub?.split("|")[2] || "noid",
+  }
 }
 
 /**

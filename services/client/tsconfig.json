@@ -4,10 +4,11 @@
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
+    "skipLibCheck": true,
     "jsx": "react-jsx",
     "paths": {
       "#app": ["src/app"],
-      "#styles": ["src/index.css"],
+      "#styles": ["src/styles.css"],
       "#components/*": ["src/components/*"],
       "#pages/*": ["src/pages/*"],
       "#utils/*": ["src/utils/*"]

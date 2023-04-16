@@ -3,7 +3,7 @@
  */
 
 // External imports.
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Auth0Provider } from "@auth0/auth0-react"
 import { Routes, Route } from "react-router-dom"
 
@@ -12,6 +12,11 @@ import { Shell } from "#components/utility"
 
 // Utility imports.
 import { RequireAuth } from "#utils/auth"
+
+function MemberDetail() {
+  const params = useParams()
+  return <h1>Hello, member {params.memberId}!</h1>
+}
 
 export default function App() {
   const navigate = useNavigate()
@@ -36,11 +41,15 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<h1>Hello, world!</h1>}
+              element={<h1>Hello, dashboard!</h1>}
             />
             <Route
-              path="/booga"
-              element={<h1>Hello, personal space!</h1>}
+              path="/members"
+              element={<h1>Hello, member list!</h1>}
+            />
+            <Route
+              path="/members/:memberId"
+              element={<MemberDetail />}
             />
           </Routes>
         </Shell>
