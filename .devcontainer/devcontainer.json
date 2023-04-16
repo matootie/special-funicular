@@ -13,11 +13,12 @@
         "skyapps.fish-vscode",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
-        "csstools.postcss"
+        "csstools.postcss",
+        "Dunn.redis"
       ]
     }
   },
-  "postCreateCommand": "npm i",
+  "postCreateCommand": "yarn",
   "remoteUser": "me",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},

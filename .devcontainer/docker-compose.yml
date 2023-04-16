@@ -8,3 +8,11 @@ services:
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    network_mode: service:app
+    volumes:
+      - data:/data
+volumes:
+  data: {}

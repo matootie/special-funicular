@@ -1,0 +1,28 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown --config config/.prettierrc.json"
+  },
+  "scripts": {
+    "api": "yarn workspace @app/api",
+    "client": "yarn workspace @app/client",
+    "build": "turbo run build",
+    "develop": "turbo run develop --no-cache --parallel --continue",
+    "deploy": "turbo run deploy",
+    "postinstall": "husky install config/husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.7",
+    "turbo": "^1.9.1"
+  }
+}

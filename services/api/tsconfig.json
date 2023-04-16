@@ -1,0 +1,22 @@
+{
+  "extends": "@app/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["ES2015"],
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "#app": ["app.ts"],
+      "#config": ["config.json"],
+      "#db/*": ["db/*"],
+      "#middlewares/*": ["middlewares/*"],
+      "#repositories/*": ["repositories/*"],
+      "#routes/*": ["routes/*"],
+      "#utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
