@@ -14,6 +14,9 @@ import App from "#app"
 // Style imports.
 import "#styles"
 
+// Font imports.
+import "#assets/fonts.css"
+
 // Get the document root.
 const root = document.getElementById("root")
 if (!root) throw new Error("Missing root")

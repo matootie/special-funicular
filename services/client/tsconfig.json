@@ -7,6 +7,7 @@
     "paths": {
       "#app": ["src/app"],
       "#styles": ["src/styles.css"],
+      "#assets/*": ["src/assets/*"],
       "#components/*": ["src/components/*"],
       "#pages/*": ["src/pages/*"],
       "#utils/*": ["src/utils/*"]

@@ -1,0 +1,30 @@
+@font-face {
+  font-family: gg sans;
+  font-style: normal;
+  font-weight: 400;
+  src: url("bf718c2c44dfdbc93c81de9bb58fc3e9.woff2") format("woff2");
+}
+@font-face {
+  font-family: gg sans;
+  font-style: normal;
+  font-weight: 500;
+  src: url("e456ad67949b831f94fb98b65e262038.woff2") format("woff2");
+}
+@font-face {
+  font-family: gg sans;
+  font-style: normal;
+  font-weight: 600;
+  src: url("7cd9e8194f16a5e00070885449b5b23f.woff2") format("woff2");
+}
+@font-face {
+  font-family: gg sans;
+  font-style: normal;
+  font-weight: 700;
+  src: url("4dfcbf879ac5c3bdb6d3829f3b998de5.woff2") format("woff2");
+}
+@font-face {
+  font-family: gg sans;
+  font-style: normal;
+  font-weight: 800;
+  src: url("223969eef25e87f8b98c3f9e620980ef.woff2") format("woff2");
+}

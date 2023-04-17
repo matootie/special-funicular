@@ -3,6 +3,9 @@ module.exports = {
   content: [".src/index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        gg: ["gg sans"],
+      },
       colors: {
         fblue: "#5865F2",
         fwhite: "#FFFFFF",
@@ -13,5 +16,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 }

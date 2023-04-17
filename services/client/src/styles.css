@@ -15,5 +15,5 @@ body {
 }
 
 .react-colorful {
-  @apply h-56 w-56 p-4 !important;
+  @apply h-full w-full p-0 !important;
 }
