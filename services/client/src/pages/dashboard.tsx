@@ -1,3 +1,15 @@
+import { useState } from "react"
+import { HexColorPicker } from "react-colorful"
+
 export function Dashboard() {
-  return <h1>Hello, dashboard!</h1>
+  const [color, setColor] = useState("#FFFFFF")
+  return (
+    <div>
+      <HexColorPicker
+        color={color}
+        onChange={setColor}
+      />
+      <h1>Hello, dashboard!</h1>
+    </div>
+  )
 }
