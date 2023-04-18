@@ -18,9 +18,9 @@ export function CustomRole() {
   const user = useUser()
   const [color, setColor] = useState("#5865F2")
   const [roleName, setRoleName] = useState<string>("booga")
-  const [_, setFile] = useState<File>()
+  const [file, setFile] = useState<File>()
   const [image, setImage] = useState<string>()
-  const { mutate, isLoading, error } = useModifyRolePreferences()
+  const { mutate, isLoading } = useModifyRolePreferences()
 
   function onChangeFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files?.[0]) {
@@ -99,17 +99,23 @@ export function CustomRole() {
             autoCapitalize="off"
             spellCheck={false}
             onChange={(e) => setRoleName(e.target.value)}
-            className="block bg-fblack rounded-sm p-1 border-1 border-fgray focus:border-fblue"
+            className="block bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue"
           />
           <label
             htmlFor="roleIcon"
             className="block mt-4 text-flightgray text-sm"
           >
             Role icon
+            <div
+              tabIndex={0}
+              className="block w-full text-base text-fwhite bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue hover:cursor-pointer"
+            >
+              {file ? file.name : "Select an image"}
+            </div>
           </label>
           <input
             type="file"
-            className="block hover:cursor-pointer"
+            className=" hidden"
             id="roleIcon"
             accept="image/png"
             onChange={onChangeFile}
@@ -166,15 +172,46 @@ export function CustomRole() {
               </p>
             </div>
           </div>
+          <div
+            className="py-2 sm:py-4 px-2 sm:px-6 mt-3 flex items-center font-gg overflow-hidden whitespace-nowrap rounded-md"
+            style={{ backgroundColor: "#111214" }}
+          >
+            <div
+              className="flex justify-center items-center space-x-1 py-1 px-2 rounded"
+              style={{ backgroundColor: "#232428" }}
+            >
+              <div
+                className="rounded-full w-3 h-3"
+                style={{ backgroundColor: color }}
+              ></div>
+              {image && (
+                <img
+                  className="w-4 h-4"
+                  src={image}
+                />
+              )}
+              <span
+                style={{
+                  color: "#DBDEE1",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  lineHeight: "16px",
+                }}
+              >
+                {roleName}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex justify-end">
         <button
           type="submit"
           onClick={() => submit()}
-          className="rounded-md bg-fblue px-3 py-2 text-sm font-semibold text-fwhite shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-fblue"
+          className="rounded-md bg-fblue px-3 py-2 text-sm font-semibold text-fwhite shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-fblue disabled:bg-flightgray disabled:animate-pulse w-28 text-center"
+          disabled={isLoading}
         >
-          Save changes
+          {isLoading ? "Saving..." : "Save changes"}
         </button>
       </div>
     </div>
