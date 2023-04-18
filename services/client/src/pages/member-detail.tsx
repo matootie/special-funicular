@@ -1,7 +1,16 @@
-import { useParams } from "react-router-dom"
-import { useMember } from "#utils/api"
-import { Loading } from "#components/utility"
+/**
+ * Member details page.
+ */
+
+// External imports.
+import { Link, useParams } from "react-router-dom"
 import { ChevronRightIcon } from "@heroicons/react/24/outline"
+
+// Component imports.
+import { Loading } from "#components/utility"
+
+// Utility imports.
+import { useMember } from "#utils/api"
 
 export function MemberDetail() {
   const { memberId } = useParams()
@@ -21,13 +30,13 @@ export function MemberDetail() {
           className="mx-auto flex w-full px-4 py-2 space-x-2 items-center"
           aria-label="Breadcrumb"
         >
-          <a
-            href="/members"
+          <Link
+            to="/members"
             className="text-sm font-medium text-flightgray"
             aria-current="page"
           >
             Members
-          </a>
+          </Link>
           <ChevronRightIcon className="w-5 h-5 text-flightgray" />
           <span
             className="text-sm font-medium text-flightgray"
