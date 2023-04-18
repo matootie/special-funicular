@@ -3,11 +3,16 @@
  */
 
 // External imports.
-import { useState, ChangeEvent } from "react"
+import { useState, ChangeEvent, Fragment } from "react"
 import { HexColorPicker } from "react-colorful"
+import toast from "react-hot-toast"
+
+// Component imports.
+import { Toast } from "#components/utility"
 
 // Utility imports.
 import { useUser } from "#utils/auth"
+import { useModifyRolePreferences } from "#utils/api"
 
 export function CustomRole() {
   const user = useUser()
@@ -15,6 +20,7 @@ export function CustomRole() {
   const [roleName, setRoleName] = useState<string>("booga")
   const [_, setFile] = useState<File>()
   const [image, setImage] = useState<string>()
+  const { mutate, isLoading, error } = useModifyRolePreferences()
 
   function onChangeFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files?.[0]) {
@@ -25,6 +31,35 @@ export function CustomRole() {
       })
       reader.readAsDataURL(event.target.files[0])
     }
+  }
+
+  function submit() {
+    mutate(
+      { color },
+      {
+        onSuccess: () => {
+          toast.custom((t) => (
+            <Toast
+              toast={t}
+              variant="success"
+              title="Saved changes!"
+              body="Successfully saved role preferences."
+            />
+          ))
+        },
+        onError: (error) => {
+          console.error(error.response.data)
+          toast.custom((t) => (
+            <Toast
+              toast={t}
+              variant="error"
+              title={error.response.data.error}
+              body={error.response.data.message}
+            />
+          ))
+        },
+      }
+    )
   }
 
   return (
@@ -83,7 +118,7 @@ export function CustomRole() {
         <div className="flex-grow">
           <span className="text-sm font-semibold text-flightgray">Preview</span>
           <div
-            className="py-2 sm:py-4 px-2 sm:px-6 mt-3 flex items-center font-gg overflow-hidden whitespace-nowrap"
+            className="py-2 sm:py-4 px-2 sm:px-6 mt-3 flex items-center font-gg overflow-hidden whitespace-nowrap rounded-md"
             style={{ backgroundColor: "#313338" }}
           >
             <img
@@ -136,6 +171,7 @@ export function CustomRole() {
       <div className="flex justify-end">
         <button
           type="submit"
+          onClick={() => submit()}
           className="rounded-md bg-fblue px-3 py-2 text-sm font-semibold text-fwhite shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-fblue"
         >
           Save changes

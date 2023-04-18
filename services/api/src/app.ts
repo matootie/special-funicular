@@ -10,6 +10,7 @@ import { auth } from "#middlewares/auth"
 import { error } from "#middlewares/error"
 
 // Route imports.
+import { preferences } from "#routes/preferences"
 import { users } from "#routes/users"
 
 // Utility imports.
@@ -25,6 +26,7 @@ app.use(express.json())
 app.use(auth)
 
 // Use routes.
+app.use(preferences)
 app.use(users)
 
 // Use 404 middleware.
