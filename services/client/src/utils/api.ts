@@ -5,7 +5,7 @@
 // External imports.
 import { useAuth0 } from "@auth0/auth0-react"
 import axiosBase from "axios"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 // Axios configuration.
 export const api = axiosBase.create({
@@ -107,25 +107,53 @@ export function useMember(id: string) {
 }
 
 /**
+ * Hook to get current role preferences.
+ */
+interface RolePreferences {
+  color: string
+  roleName: string
+}
+export function useRolePreferences() {
+  const { getAccessTokenSilently } = useAuth0()
+  return useQuery("role-preferences", async () => {
+    const token = await getAccessTokenSilently()
+    const response = await api.get<RolePreferences>("/preferences/role", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  })
+}
+
+/**
  * Hook to modify role preferences.
  */
 export function useModifyRolePreferences() {
   const { getAccessTokenSilently } = useAuth0()
+  const queryClient = useQueryClient()
   return useMutation<
     void,
     { response: { data: { message: string; error: string } } },
     { color: string }
-  >(async ({ color }) => {
-    const token = await getAccessTokenSilently()
-    const response = await api.put(
-      "/preferences/role",
-      { color },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    return response.data
-  })
+  >(
+    async ({ color }) => {
+      const token = await getAccessTokenSilently()
+      const response = await api.put(
+        "/preferences/role",
+        { color },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      return response.data
+    },
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries("role-preferences")
+      },
+    }
+  )
 }

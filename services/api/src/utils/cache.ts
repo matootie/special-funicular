@@ -24,5 +24,12 @@ async function set(key: string, data: any, ttl = 300) {
   await redis.set(key, value, "EX", ttl)
 }
 
+/**
+ * Clear a value in cache.
+ */
+async function clear(key: string) {
+  await redis.del(key)
+}
+
 // Export cache object.
-export const cache = { get, set }
+export const cache = { get, set, clear }

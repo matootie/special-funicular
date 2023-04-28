@@ -16,7 +16,17 @@ import { logger } from "#utils/logger"
 export const preferences = express.Router()
 
 /**
- * Get current user membership status.
+ * Get current role preferences.
+ */
+preferences.get("/preferences/role", member, async (_req, res) => {
+  res.status(200).send({
+    color: "#FA8B34",
+    roleName: "Hello, world!",
+  })
+})
+
+/**
+ * Update role preferences.
  */
 preferences.put("/preferences/role", member, async (req, _res) => {
   logger.debug(req.body)

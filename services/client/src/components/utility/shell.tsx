@@ -46,7 +46,7 @@ export function Shell({ children }: { children?: ReactNode }) {
   }
   return (
     <>
-      <Toaster position="top-left" />
+      <Toaster position="top-right" />
       <div className="min-h-screen flex flex-col relative">
         <div className="py-2 px-4">
           <Disclosure

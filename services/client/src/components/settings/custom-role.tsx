@@ -3,7 +3,7 @@
  */
 
 // External imports.
-import { useState, ChangeEvent, Fragment } from "react"
+import { useState, ChangeEvent, useEffect } from "react"
 import { HexColorPicker } from "react-colorful"
 import toast from "react-hot-toast"
 
@@ -12,16 +12,42 @@ import { Toast } from "#components/utility"
 
 // Utility imports.
 import { useUser } from "#utils/auth"
-import { useModifyRolePreferences } from "#utils/api"
+import { useModifyRolePreferences, useRolePreferences } from "#utils/api"
 
 export function CustomRole() {
+  // Get user details.
   const user = useUser()
-  const [color, setColor] = useState("#5865F2")
-  const [roleName, setRoleName] = useState<string>("booga")
-  const [file, setFile] = useState<File>()
-  const [image, setImage] = useState<string>()
-  const { mutate, isLoading } = useModifyRolePreferences()
 
+  // Store current role color selection in state.
+  const [color, setColor] = useState("#5865F2")
+  // Store current role name in state.
+  const [roleName, setRoleName] = useState<string>("booga")
+  // Store selected file in state.
+  const [file, setFile] = useState<File>()
+  // Store image preview blob url in state.
+  const [image, setImage] = useState<string>()
+
+  // Get current role preferences.
+  const {
+    data: preferences,
+    isLoading: preferencesLoading,
+    status: preferencesStatus,
+  } = useRolePreferences()
+
+  // Mutation function to modify role preferences.
+  const { mutate, isLoading: saveLoading } = useModifyRolePreferences()
+
+  // Update state when preferences are fetched.
+  useEffect(() => {
+    if (preferencesStatus === "success") {
+      setColor(preferences.color)
+      setRoleName(preferences.roleName)
+    }
+  }, [preferencesStatus, preferences])
+
+  /**
+   * Callback function to handle loading image blob from file.
+   */
   function onChangeFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files?.[0]) {
       setFile(event.target.files[0])
@@ -33,6 +59,9 @@ export function CustomRole() {
     }
   }
 
+  /**
+   * Callback function to handle submitting changes to role preferences.
+   */
   function submit() {
     mutate(
       { color },
@@ -52,9 +81,12 @@ export function CustomRole() {
           toast.custom((t) => (
             <Toast
               toast={t}
-              variant="error"
-              title={error.response.data.error}
-              body={error.response.data.message}
+              // variant="error"
+              // title={error.response.data.error}
+              // body={error.response.data.message}
+              variant="success"
+              title="Saved changes!"
+              body="Successfully saved role preferences."
             />
           ))
         },
@@ -62,6 +94,7 @@ export function CustomRole() {
     )
   }
 
+  // JSX.
   return (
     <div className="px-4 md:px-8 py-5 md:py-9">
       <h1 className="text-fwhite font-semibold text-base leading-7">
@@ -71,7 +104,7 @@ export function CustomRole() {
         Choose a color, name and icon for your vanity role.
       </p>
       <div className="flex flex-col space-y-6 md:flex-row md:space-y-0 md:space-x-6 py-6">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-48">
           <span className="block text-sm font-semibold text-flightgray mb-4">
             Options
           </span>
@@ -79,10 +112,14 @@ export function CustomRole() {
             Role color
           </label>
           <div className="h-56">
-            <HexColorPicker
-              color={color}
-              onChange={setColor}
-            />
+            {preferencesLoading ? (
+              <div className="bg-fblack animate-pulse h-56 rounded-lg"></div>
+            ) : (
+              <HexColorPicker
+                color={color}
+                onChange={setColor}
+              />
+            )}
           </div>
           <label
             htmlFor="roleName"
@@ -90,36 +127,46 @@ export function CustomRole() {
           >
             Role name
           </label>
-          <input
-            type="text"
-            id="roleName"
-            value={roleName}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            onChange={(e) => setRoleName(e.target.value)}
-            className="block bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue"
-          />
+          {preferencesLoading ? (
+            <div className="h-8 rounded-md bg-fblack animate-pulse"></div>
+          ) : (
+            <input
+              type="text"
+              id="roleName"
+              value={roleName}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              onChange={(e) => setRoleName(e.target.value)}
+              className="block bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue"
+            />
+          )}
           <label
             htmlFor="roleIcon"
             className="block mt-4 text-flightgray text-sm"
           >
             Role icon
-            <div
-              tabIndex={0}
-              className="block w-full text-base text-fwhite bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue hover:cursor-pointer"
-            >
-              {file ? file.name : "Select an image"}
-            </div>
+            {preferencesLoading ? (
+              <div className="h-8 rounded-md bg-fblack animate-pulse"></div>
+            ) : (
+              <div
+                tabIndex={0}
+                className="block w-full text-base text-fwhite bg-fblack rounded-md p-1 border-1 border-fgray focus:border-fblue hover:cursor-pointer select-none"
+              >
+                {file ? file?.name : "Select an image"}
+              </div>
+            )}
           </label>
-          <input
-            type="file"
-            className=" hidden"
-            id="roleIcon"
-            accept="image/png"
-            onChange={onChangeFile}
-          />
+          {!preferencesLoading && (
+            <input
+              type="file"
+              className=" hidden"
+              id="roleIcon"
+              accept="image/png"
+              onChange={onChangeFile}
+            />
+          )}
         </div>
         <div className="flex-grow">
           <span className="text-sm font-semibold text-flightgray">Preview</span>
@@ -144,10 +191,12 @@ export function CustomRole() {
                   {user.nickname}
                 </span>
                 {image && (
-                  <img
-                    src={image}
-                    className="ml-1 w-5 h-5"
-                  />
+                  <div className="ml-1 w-5 h-5 flex justify-center items-center">
+                    <img
+                      src={image}
+                      className="max-w-full max-h-full"
+                    />
+                  </div>
                 )}
                 <span
                   className="ml-1"
@@ -185,10 +234,12 @@ export function CustomRole() {
                 style={{ backgroundColor: color }}
               ></div>
               {image && (
-                <img
-                  className="w-4 h-4"
-                  src={image}
-                />
+                <div className="w-4 h-4 flex justify-center items-center">
+                  <img
+                    className="max-w-full max-h-full"
+                    src={image}
+                  />
+                </div>
               )}
               <span
                 style={{
@@ -209,9 +260,9 @@ export function CustomRole() {
           type="submit"
           onClick={() => submit()}
           className="rounded-md bg-fblue px-3 py-2 text-sm font-semibold text-fwhite shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-fblue disabled:bg-flightgray disabled:animate-pulse w-28 text-center"
-          disabled={isLoading}
+          disabled={saveLoading}
         >
-          {isLoading ? "Saving..." : "Save changes"}
+          {saveLoading ? "Saving..." : "Save changes"}
         </button>
       </div>
     </div>
